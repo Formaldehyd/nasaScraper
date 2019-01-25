@@ -19,7 +19,7 @@ class controller:
         self.firstDate = datetime.date(1995,6,16)
         self.number = daysCompleted
         self.daysCompleted = datetime.timedelta(days = daysCompleted)
-        self.cnx = mysql.connector.connector(user='nasa', password='nasa', host='127.0.0.1', database = 'nasa')
+        self.cnx = mysql.connector.connect(user='nasa', password='nasa', host='127.0.0.1', database = 'nasa')
         self.cursor = self.cnx.cursor()
 
 
