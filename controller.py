@@ -15,7 +15,7 @@ class controller:
 
         self.logger = logging.getLogger()
         self.baseURL = 'https://apod.nasa.gov/apod/'
-        self.basedir = '/home/lion/Desktop/'
+        self.basedir = '~/Desktop/'
         self.firstDate = datetime.date(1995,6,16)
 
         self.daysCompleted = datetime.timedelta(days = daysCompleted)

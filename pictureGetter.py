@@ -17,7 +17,7 @@ class day:
     # For every day I want to create a class that holds and collects the information
     # then i want to write this information to the database and dump the picture to the NAS
 
-def __init__(self, date, basedir, baseurl):
+    def __init__(self, date, basedir, baseurl):
 
         self.logger = logging.getLogger() # the root logger
         self.date = date # date must be a datetime object from wich I'll form the url
