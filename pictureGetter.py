@@ -61,7 +61,7 @@ class day:
         for paragraph in self.soup.find_all('p'):
             if 'Copyright: ' in paragraph.text:
                 self.artist = paragraph.text.split('Copyright: ')[1]
-            else: 'Credit: ' in paragraph.text:
+            elif 'Credit: ' in paragraph.text:
                 self.artist = paragraph.text.split('Credit: ')[1]
 
             if 'Explanation: ' in paragraph.text:
