@@ -5,7 +5,7 @@ import bs4
 import datetime
 import os
 import hashlib
-
+import mysql.connector
 
 
 
@@ -16,9 +16,14 @@ class DayFailed(Exception):
 class day:
     # For every day I want to create a class that holds and collects the information
     # then i want to write this information to the database and dump the picture to the NAS
+    query = ("INSERT INTO metadata "
+            "(id, year, month, day, title, artist, explanation, filename) VALUES "
+            "({} {} {} {} {} {} {} {});")
 
-    def __init__(self, date, basedir, baseurl):
 
+    def __init__(self, date, cursor, number, basedir, baseurl):
+        self.coursor = cursor
+        self.number = number
         self.logger = logging.getLogger() # the root logger
         self.date = date # date must be a datetime object from wich I'll form the url
         self.basedir = basedir
@@ -116,21 +121,32 @@ class day:
             self.nonce = self.nonce + 'a'
 
         else:
-            with open(self.basedir + str(self.date.month) + '/' + hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest()+'.'+self.pictureType, 'wb') as file:
-                self.pictureDir = str(self.date.month) + '/' + hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest()+self.pictureType
+            with open(self.basedir + str(self.date.month) + '/' + hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest(), 'wb') as file:
+                self.pictureDir = str(self.date.month) + '/' + hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest()#+self.pictureType
                 file.write(self.picture)
 
 
     def writeDatabase(self):
         # for now I dont want to create a Database, since I first have to move the DAtabase
         # Ill just write the information to a formatted file
-        with open(self.basedir + '/information/' + str(self.date)+'.txt','w') as file:
-            file.write(self.title)
-            file.write(''+self.artist)
-            file.write('<++>'+self.explanation)
-
-
-
+        #with open(self.basedir + '/information/' + str(self.date)+'.txt','w') as file:
+        #    file.write(self.title)
+        #    file.write('<++>'+self.artist)
+        #    file.write('<++>'+self.explanation) 
+        data = [self.number, self.date.year, self.date.month, self.date.day]
+        if self.title:
+            data.append(self.title)
+        else:
+            data.append(None)
+        if self.artist:
+            data.append(self.artist)
+        else:
+            data.append(None)
+        if self.explanation:
+            data.append(self.explanation)
+        else:
+            data.append(None)
+        data.append(hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdgest())
     def openURL(self):
         # read in the response and store the pure html.
         try:
