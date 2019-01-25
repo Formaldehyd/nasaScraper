@@ -16,13 +16,9 @@ class DayFailed(Exception):
 class day:
     # For every day I want to create a class that holds and collects the information
     # then i want to write this information to the database and dump the picture to the NAS
-    query = ("INSERT INTO metadata "
-            "(id, year, month, day, title, artist, explanation, filename) VALUES "
-            "({} {} {} {} {} {} {} {});")
-
 
     def __init__(self, date, cursor, number, basedir, baseurl):
-        self.coursor = cursor
+        self.cursor = cursor
         self.number = number
         self.logger = logging.getLogger() # the root logger
         self.date = date # date must be a datetime object from wich I'll form the url
@@ -39,6 +35,10 @@ class day:
         self.picture = None
         self.pictureDir = None
         self.nonce = '' # an empty string to alter the hash in case there is a file colission. No very efficient solution, but will do the job
+        self.query = ("INSERT INTO metadata "
+            "(id, year, month, day, title, artist, explanation, filename) VALUES "
+            "({} {} {} {} {} {} {} {});")
+
 
 
 
@@ -148,7 +148,7 @@ class day:
             data.append(None)
         data.append(hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest())
 
-        self.cursor.execute(query.format(data))
+        self.cursor.execute(self.query.format(data))
         self.cursor.commit()
 
     def openURL(self):
