@@ -51,10 +51,7 @@ class day:
         while self.title[-1] == ' ':
             self.title = self.title[:-1]
 
-        if not ('Explanation:' in self.soup.text and 'Copyright:' in self.soup.text):
-            self.logger.error('Explanation or Copyright not found: {}, {}'.format(str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day) ,self.url))
-            raise DayFailed
-
+        #if not ('Explanation:' in self.soup.text and 'Copyright:' in self.soup.text):
         # selecting the photografer: Every page has the strinc 'Copyright:'. However in some pages it is followed with a newline
         # charakter and in some pages directly with the information
         #selecting the Explanation is a little difficult.
@@ -62,11 +59,19 @@ class day:
         # actually most of the images seem to use this version, therefor I'll implement this as a main test and if this does not work I'll just save all text
 
         for paragraph in self.soup.find_all('p'):
+            if 'Copyright: ' in paragraph.text:
+                self.artist = paragraph.text.split('Copyright: ')[1]
+            else: 'Credit: ' in paragraph.text:
+                self.artist = paragraph.text.split('Credit: ')[1]
+
             if 'Explanation: ' in paragraph.text:
                 self.explanation = paragraph.text.split('Explanation: ')[1]
 
-        if self.explanation is None:
+        if (self.explanation is None or self.artist is None):
             self.explanation = self.soup.text.split('Explanation: ')[1]
+            self.logger.error('Explanation or Copyright not found: {}, {}'.format(str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day) ,self.url))
+            #raise DayFailed # for now i dont want to kill the day
+
 
         for link in self.soup.find_all('a'):
             print(link.get('href'))
@@ -121,7 +126,7 @@ class day:
         # Ill just write the information to a formatted file
         with open(self.basedir + '/information/' + str(self.date)+'.txt','w') as file:
             file.write(self.title)
-            file.write('<++>'+self.artist)
+            file.write(''+self.artist)
             file.write('<++>'+self.explanation)
 
 
