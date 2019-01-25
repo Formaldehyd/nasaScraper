@@ -146,7 +146,11 @@ class day:
             data.append(self.explanation)
         else:
             data.append(None)
-        data.append(hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdgest())
+        data.append(hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest())
+
+        self.cursor.execute(query.format(data))
+        self.cursor.commit()
+
     def openURL(self):
         # read in the response and store the pure html.
         try:

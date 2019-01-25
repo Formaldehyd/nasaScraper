@@ -25,7 +25,7 @@ class controller:
 
     def justAnOtherDay(self):
         try:
-            day = pictureGetter.day(number = self.number, date = self.firstDate + self.daysCompleted, basedir = self.basedir, baseurl = self.baseURL, database = self.cursor)
+            day = pictureGetter.day(number = self.number, date = self.firstDate + self.daysCompleted, basedir = self.basedir, baseurl = self.baseURL, cursor = self.cursor)
         except pictureGetter.DayFailed as err:
             print('day Failed.')
             self.logger.error('Day Failed :{};{}'.format(err, self.firstDate + self.daysCompleted))
