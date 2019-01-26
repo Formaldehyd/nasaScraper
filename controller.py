@@ -32,6 +32,7 @@ class controller:
 
     def addDay(self, daysToAdd = 1):
         self.daysCompleted = self.daysCompleted + datetime.timedelta(days = daysToAdd)
+        self.cnx.commit()
         self.number = self.number + 1
 
 try:

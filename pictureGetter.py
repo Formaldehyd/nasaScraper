@@ -37,7 +37,7 @@ class day:
         self.nonce = '' # an empty string to alter the hash in case there is a file colission. No very efficient solution, but will do the job
         self.query = ("INSERT INTO metadata "
             "(id, year, month, day, title, artist, explanation, filename) VALUES "
-            "({} {} {} {} {} {} {} {});")
+            '({}, {}, {}, {}, "{}", "{}", "{}", "{}");')
 
 
 
