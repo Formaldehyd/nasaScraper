@@ -43,8 +43,9 @@ except FileNotFoundError as err:
 
 
 logging.basicConfig(filename = os.getcwd() + '/NASA.log')
-controller = controller(6200)
+controller = controller(0)
 for i in range(1,15):
     controller.addDay()
     controller.justAnOtherDay()
     time.sleep(10)
+
