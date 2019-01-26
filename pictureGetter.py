@@ -65,15 +65,15 @@ class day:
 
         for paragraph in self.soup.find_all('p'):
             if 'Copyright: ' in paragraph.text:
-                self.artist = paragraph.text.split('Copyright: ')[1]
+                self.artist = paragraph.text.split('Copyright: ')[1].replace('"','\"')
             elif 'Credit: ' in paragraph.text:
-                self.artist = paragraph.text.split('Credit: ')[1]
+                self.artist = paragraph.text.split('Credit: ')[1].replace('"','\"')
 
             if 'Explanation: ' in paragraph.text:
-                self.explanation = paragraph.text.split('Explanation: ')[1]
+                self.explanation = paragraph.text.split('Explanation: ')[1].replace('"','\"')
 
         if (self.explanation is None or self.artist is None):
-            self.explanation = self.soup.text.split('Explanation: ')[1]
+            self.explanation = self.soup.text.split('Explanation: ')[1].replace('"','\"')
             self.logger.error('Explanation or Copyright not found: {}, {}'.format(str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day) ,self.url))
             #raise DayFailed # for now i dont want to kill the day
 
