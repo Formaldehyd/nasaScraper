@@ -133,22 +133,22 @@ class day:
         #    file.write(self.title)
         #    file.write('<++>'+self.artist)
         #    file.write('<++>'+self.explanation) 
-        data = [self.number, self.date.year, self.date.month, self.date.day]
+        data = [str(self.number), str(self.date.year), str(self.date.month), str(self.date.day)]
         if self.title:
             data.append(self.title)
         else:
-            data.append(None)
+            data.append('None')
         if self.artist:
             data.append(self.artist)
         else:
-            data.append(None)
+            data.append('None')
         if self.explanation:
             data.append(self.explanation)
         else:
-            data.append(None)
+            data.append('None')
         data.append(hashlib.md5((self.nonce + self.title).encode('utf-8')).hexdigest())
 
-        self.cursor.execute(self.query.format(data))
+        self.cursor.execute(self.query.format(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
         self.cursor.commit()
 
     def openURL(self):
@@ -162,7 +162,7 @@ class day:
             self.logger.error('HTTPError; date {}; url {}; {}'.format(str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day), self.url, err))
             raise DayFailed
 
-        except urllib.error.URLError as err: 
+        except urllib.error.URLError as err:
             self.logger.error('URLError; date {}; {}'.format(str(self.date.year)+'-'+str(self.date.month)+'-'+str(self.date.day), err))
             raise DayFailed
 
